@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/api-server.iml" filepath="$PROJECT_DIR$/api-server.iml" />
-      <module fileurl="file://$PROJECT_DIR$/ccshow-core/ccshow-core.iml" filepath="$PROJECT_DIR$/ccshow-core/ccshow-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/CC-Show-Server.iml" filepath="$PROJECT_DIR$/CC-Show-Server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/CC-Show-Server_main.iml" filepath="$PROJECT_DIR$/.idea/modules/CC-Show-Server_main.iml" group="CC-Show-Server" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/CC-Show-Server_test.iml" filepath="$PROJECT_DIR$/.idea/modules/CC-Show-Server_test.iml" group="CC-Show-Server" />
     </modules>
   </component>
 </project>
