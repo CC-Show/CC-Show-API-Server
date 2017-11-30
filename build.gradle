@@ -24,6 +24,7 @@ dependencies {
     compile 'io.vertx:vertx-core:3.5.0'
     compile 'io.vertx:vertx-web:3.5.0'
     compile 'io.vertx:vertx-web-templ-handlebars:3.5.0'
+    compile group: 'org.reflections', name: 'reflections', version: '0.9.10'
 }
 
 shadowJar {
