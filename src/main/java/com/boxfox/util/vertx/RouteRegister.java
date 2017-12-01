@@ -9,6 +9,8 @@ import java.util.Set;
 
 import com.google.common.net.HttpHeaders;
 import io.vertx.core.Vertx;
+import io.vertx.core.json.JsonArray;
+import io.vertx.core.json.JsonObject;
 import org.reflections.Reflections;
 
 import io.vertx.core.Handler;
@@ -36,7 +38,7 @@ public class RouteRegister {
         Set<Class<?>> annotatedClass = routerAnnotations.getTypesAnnotatedWith(RouteRegistration.class);
         Set<Method> annotatedMethod = routerAnnotations.getMethodsAnnotatedWith(RouteRegistration.class);
 
-        for (Class<?> c : annotatedClass) {
+        annotatedClass.forEach(c -> {
             RouteRegistration annotation = c.getAnnotation(RouteRegistration.class);
             try {
                 Object routingInstance = c.newInstance();
@@ -47,9 +49,9 @@ public class RouteRegister {
             } catch (InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
             }
-        }
+        });
 
-        for (Method m : annotatedMethod) {
+        annotatedMethod.forEach(m -> {
             RouteRegistration annotation = m.getAnnotation(RouteRegistration.class);
             try {
                 Object instance = searchCreatedInstance(m.getDeclaringClass());
@@ -61,53 +63,85 @@ public class RouteRegister {
             } catch (InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
             }
-        }
+        });
     }
 
     private Handler<RoutingContext> createMethodHandler(Object instance, Method m) {
-        return new Handler<RoutingContext>() {
-            @Override
-            public void handle(RoutingContext ctx) {
-                List<Object> argments = new ArrayList<>();
-                Arrays.stream(m.getParameters()).forEach(param -> {
-                    String paramType = param.getAnnotation(Param.class).type();
-                    String paramName = param.getName();
-                    Class<?> paramClass = param.getType();
-                    if (paramClass.equals(Handler.class)) {
-                        argments.add(ctx);
-                    } else {
-                        String paramData = null;
-                        switch (paramType) {
-                            case Param.TYPE_BODY:
-                                paramData = getParameterFromBody(ctx, paramName, paramClass);
-                                break;
-                            case Param.TYPE_PATH:
-                                paramData = ctx.pathParam(paramName);
-                                break;
-                            default:
-                                paramData = ctx.queryParam(paramName).get(0);
-                        }
-                        argments.add(paramData);
+        return ctx -> {
+            List<Object> argments = new ArrayList<>();
+            Arrays.stream(m.getParameters()).forEach(param -> {
+                String paramType = param.getAnnotation(Param.class).type();
+                String paramName = param.getName();
+                Class<?> paramClass = param.getType();
+                if (paramClass.equals(Handler.class)) {
+                    argments.add(ctx);
+                } else {
+                    Object paramData = null;
+                    switch (paramType) {
+                        case Param.TYPE_BODY:
+                            paramData = getParameterFromBody(ctx, paramName, paramClass);
+                            break;
+                        case Param.TYPE_PATH:
+                            paramData = castingParameter(ctx.pathParam(paramName), paramType);
+                            break;
+                        default:
+                            paramData = castingParameter(ctx.queryParam(paramName).get(0), paramType);
                     }
-                });
-                try {
-                    m.invoke(instance, argments.toArray());
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
+                    argments.add(paramData);
                 }
+            });
+            try {
+                m.invoke(instance, argments.toArray());
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
             }
-        };
+        }
     }
 
-    private String getParameterFromBody(RoutingContext ctx, String paramName, Class<?> paramType) {
-        String paramData = null;
-        /*boolean json = ctx.request().getHeader(HttpHeaders.CONTENT_TYPE).toLowerCase().contains("json");
-        if (paramType.equals(String.class))
-            paramData = (json) ? ctx.getBodyAsJson().getValue(paramName) : ctx.getBody
-        else if (paramType)
-            paramData = ctx.getBody().get*/
+    ;
+}
+
+    private Object castingParameter(String str, String paramType) {
+        Object paramData = str;
+        if (paramType.equals(Integer.class)) {
+            paramData = Integer.valueOf(str);
+        } else if (paramType.equals(Boolean.class)) {
+            paramData = Boolean.valueOf(str);
+        } else if (paramType.equals(Double.class)) {
+            paramData = Double.valueOf(str);
+        } else if (paramType.equals(Float.class)) {
+            paramData = Float.valueOf(str);
+        } else if (paramData.equals(JsonObject.class)) {
+            paramData = new JsonObject(str);
+        } else if (paramData.equals(JsonArray.class)) {
+            paramData = new JsonArray(str);
+        }
+        return paramData;
+    }
+
+    private Object getParameterFromBody(RoutingContext ctx, String paramName, Class<?> paramType) {
+        Object paramData = null;
+        boolean json = ctx.request().getHeader(HttpHeaders.CONTENT_TYPE).toLowerCase().contains("json");
+        JsonObject bodyData = ctx.getBodyAsJson();
+        if (paramType.equals(String.class)) {
+            paramData = bodyData.getString(paramName);
+        } else if (paramType.equals(Integer.class)) {
+            paramData = bodyData.getInteger(paramName);
+        } else if (paramType.equals(Boolean.class)) {
+            paramData = bodyData.getBoolean(paramName);
+        } else if (paramType.equals(Double.class)) {
+            paramData = bodyData.getDouble(paramName);
+        } else if (paramType.equals(Float.class)) {
+            paramData = bodyData.getFloat(paramName);
+        } else if (paramData.equals(JsonObject.class)) {
+            paramData = bodyData.getJsonObject(paramName);
+        } else if (paramData.equals(JsonArray.class)) {
+            paramData = bodyData.getJsonArray(paramName);
+        } else if (paramData.equals(byte[].class)) {
+            paramData = bodyData.getBinary(paramName);
+        }
         return paramData;
     }
 
@@ -119,7 +153,7 @@ public class RouteRegister {
         return null;
     }
 
-    public Router getRouter(){
+    public Router getRouter() {
         return router;
     }
 }

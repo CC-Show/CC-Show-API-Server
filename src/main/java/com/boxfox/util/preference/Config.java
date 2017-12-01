@@ -14,7 +14,7 @@ public class Config {
         return DefaultConfig.instance;
     }
 
-    public String getValue(){
-
+    public String getValue() {
+        return null;
     }
 }
