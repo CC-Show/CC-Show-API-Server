@@ -10,11 +10,11 @@ public class Config {
         private static Config instance = new Config();
     }
 
-    public Config getDefaultInstance() {
+    public static Config getDefaultInstance() {
         return DefaultConfig.instance;
     }
 
-    public String getValue() {
+    public String getString(String propName) {
         return null;
     }
 }

@@ -25,6 +25,7 @@ dependencies {
     compile 'io.vertx:vertx-web:3.5.0'
     compile 'io.vertx:vertx-web-templ-handlebars:3.5.0'
     compile group: 'org.reflections', name: 'reflections', version: '0.9.10'
+    compile group: 'commons-codec', name: 'commons-codec', version: '1.11'
 }
 
 shadowJar {
