@@ -33,7 +33,11 @@ public class RouteRegister {
         this.routerList = new ArrayList();
     }
 
-    private void route(String... pacakge) {
+    public void route(Handler<RoutingContext> handler) {
+        router.route().handler(handler);
+    }
+
+    public void route(String... pacakge) {
         Reflections routerAnnotations = new Reflections(pacakge);
         Set<Class<?>> annotatedClass = routerAnnotations.getTypesAnnotatedWith(RouteRegistration.class);
         Set<Method> annotatedMethod = routerAnnotations.getMethodsAnnotatedWith(RouteRegistration.class);
@@ -97,11 +101,8 @@ public class RouteRegister {
             } catch (InvocationTargetException e) {
                 e.printStackTrace();
             }
-        }
+        };
     }
-
-    ;
-}
 
     private Object castingParameter(String str, String paramType) {
         Object paramData = str;

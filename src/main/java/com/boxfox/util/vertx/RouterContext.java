@@ -1,8 +1,6 @@
 package com.boxfox.util.vertx;
 
-import io.vertx.core.Handler;
 import io.vertx.core.http.HttpMethod;
-import io.vertx.ext.web.RoutingContext;
 
 public class RouterContext implements Comparable<RouterContext> {
     private String uri;
