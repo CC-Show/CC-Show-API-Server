@@ -1,20 +1,50 @@
 package com.boxfox.util.preference;
 
-public class Config {
-    private Config defaultInstance;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
 
-    private Config() {
+public class Config {
+    private static Map<String, Config> configMap = new HashMap<>();
+    private Properties preference;
+
+    private Config(String name) {
+        this.preference = new Properties();
+        try {
+            preference.load(new FileInputStream(name));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private static class DefaultConfig {
-        private static Config instance = new Config();
+        private static Config instance = new Config("config.properties");
     }
 
     public static Config getDefaultInstance() {
         return DefaultConfig.instance;
     }
 
+    public static Config getInstance(String name) {
+        Config config = configMap.get(name);
+        if (config == null) {
+            config = new Config(name);
+            configMap.put(name, config);
+        }
+        return config;
+    }
+
     public String getString(String propName) {
-        return null;
+        return preference.getProperty(propName);
+    }
+
+    public int getInt(String propName) {
+        return Integer.valueOf(preference.getProperty(propName));
+    }
+
+    public boolean getBoolean(String propName) {
+        return Boolean.valueOf(preference.getProperty(propName));
     }
 }
