@@ -13,7 +13,7 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-import com.boxfox.util.preference.Config;
+import com.boxfox.util.data.Config;
 import org.apache.commons.codec.binary.Base64;
 
 public class AES256 {

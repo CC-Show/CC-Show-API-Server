@@ -1,4 +1,4 @@
-package com.boxfox.util.preference;
+package com.boxfox.util.data;
 
 import java.io.FileInputStream;
 import java.io.IOException;

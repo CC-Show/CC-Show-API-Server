@@ -1,4 +1,4 @@
-package com.boxfox.util.vertx;
+package com.boxfox.util.vertx.router;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
