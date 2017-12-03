@@ -1,5 +1,9 @@
 package com.boxfox.util.data;
 
+import com.google.common.base.Charsets;
+import com.google.common.io.Resources;
+
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,21 +25,20 @@ public class Database {
         return statement;
     }
 
-    public static ResultSet executeQuery(String sql, Object... args) {
-        try {
-            return buildQuery(sql, args).executeQuery();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
+    public static ResultSet executeQuery(String sql, Object... args) throws SQLException {
+        return buildQuery(sql, args).executeQuery();
     }
 
-    public static int executeUpdate(String sql, Object... args) {
+    public static int executeUpdate(String sql, Object... args) throws SQLException {
+        return buildQuery(sql, args).executeUpdate();
+    }
+
+    public static String getQueryFromResource(String resourceName) {
         try {
-            return buildQuery(sql, args).executeUpdate();
-        } catch (SQLException e) {
+            return Resources.toString(Resources.getResource(resourceName), Charsets.UTF_8);
+        } catch (IOException e) {
             e.printStackTrace();
-            return 0;
         }
+        return null;
     }
 }

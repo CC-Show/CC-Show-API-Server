@@ -11,10 +11,10 @@ import io.vertx.core.http.HttpMethod;
 @Target({ElementType.TYPE, ElementType.METHOD})
 public @interface RouteRegistration {
 
-    String uri() default "/";
+    String uri();
 
     HttpMethod[] method() default {HttpMethod.GET};
 
-    String description();
+    String description() default "";
 
 }
