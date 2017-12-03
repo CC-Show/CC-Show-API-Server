@@ -1,4 +1,4 @@
-package com.boxfox.util.secure;
+package com.boxfox.support.secure;
 
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
@@ -13,7 +13,7 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-import com.boxfox.util.data.Config;
+import com.boxfox.support.data.Config;
 import org.apache.commons.codec.binary.Base64;
 
 public class AES256 {

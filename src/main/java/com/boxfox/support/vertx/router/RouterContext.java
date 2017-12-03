@@ -1,4 +1,4 @@
-package com.boxfox.util.vertx.router;
+package com.boxfox.support.vertx.router;
 
 import io.vertx.core.http.HttpMethod;
 

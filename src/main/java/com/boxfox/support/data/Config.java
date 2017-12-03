@@ -1,4 +1,4 @@
-package com.boxfox.util.data;
+package com.boxfox.support.data;
 
 import java.io.FileInputStream;
 import java.io.IOException;

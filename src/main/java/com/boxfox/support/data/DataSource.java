@@ -1,4 +1,4 @@
-package com.boxfox.util.data;
+package com.boxfox.support.data;
 
 import org.apache.commons.dbcp.BasicDataSource;
 

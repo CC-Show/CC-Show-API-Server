@@ -1,6 +1,4 @@
-package com.boxfox.util.vertx.router;
-
-import io.vertx.core.http.HttpMethod;
+package com.boxfox.support.vertx.router;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -1,9 +1,9 @@
 package com.boxfox.core;
 
-import com.boxfox.util.vertx.middleware.CORSHandler;
-import com.boxfox.util.vertx.middleware.JWTHandler;
-import com.boxfox.util.vertx.router.RouteRegister;
-import com.boxfox.util.vertx.router.RouterPackageLoader;
+import com.boxfox.support.vertx.middleware.CORSHandler;
+import com.boxfox.support.vertx.middleware.JWTHandler;
+import com.boxfox.support.vertx.router.RouteRegister;
+import com.boxfox.support.vertx.router.RouterPackageLoader;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
 import io.vertx.core.http.HttpServer;

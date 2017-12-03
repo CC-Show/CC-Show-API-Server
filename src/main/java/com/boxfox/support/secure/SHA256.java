@@ -1,4 +1,4 @@
-package com.boxfox.util.secure;
+package com.boxfox.support.secure;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

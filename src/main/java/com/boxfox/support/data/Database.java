@@ -1,4 +1,4 @@
-package com.boxfox.util.data;
+package com.boxfox.support.data;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
