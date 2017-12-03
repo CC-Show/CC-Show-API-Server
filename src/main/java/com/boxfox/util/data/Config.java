@@ -40,6 +40,15 @@ public class Config {
         return preference.getProperty(propName);
     }
 
+    public String getString(String propName, String defaultStr) {
+        String str = preference.getProperty(propName);
+        if (str == null) {
+            str = defaultStr;
+        }
+        return str;
+    }
+
+
     public int getInt(String propName) {
         return Integer.valueOf(preference.getProperty(propName));
     }
