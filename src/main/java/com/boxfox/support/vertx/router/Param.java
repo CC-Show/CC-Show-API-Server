@@ -11,7 +11,8 @@ public @interface Param {
     String TYPE_QUERY = "TYPE_QUERY";
     String TYPE_PATH = "TYPE_PATH";
     String TYPE_BODY = "TYPE_BODY";
+    String TYPE_AUTO = "TYPE_AUTO";
 
-    String type() default TYPE_QUERY;
+    String type() default TYPE_AUTO;
 
 }

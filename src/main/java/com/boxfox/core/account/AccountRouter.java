@@ -6,6 +6,7 @@ import com.boxfox.core.account.register.RegistPerformer;
 import com.boxfox.support.data.Config;
 import com.boxfox.support.data.Database;
 import com.boxfox.support.vertx.middleware.JWTHandler;
+import com.boxfox.support.vertx.router.Param;
 import com.boxfox.support.vertx.router.RouteRegistration;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;
@@ -33,7 +34,7 @@ public class AccountRouter {
     }
 
     @RouteRegistration(uri = "/account/login", method = HttpMethod.POST)
-    public void login(RoutingContext ctx, String email, String password) {
+    public void login(RoutingContext ctx, @Param String email, @Param String password) {
         LoginDTO result = loginDAO.login(email, password);
         if(result != null) {
             ctx.response().setStatusCode(HttpResponseStatus.OK.code());
@@ -46,7 +47,7 @@ public class AccountRouter {
     }
 
     @RouteRegistration(uri = "/account/register", method = HttpMethod.POST)
-    public void register(RoutingContext ctx, String email, String password, String nickname) {
+    public void register(RoutingContext ctx, @Param String email, @Param String password, @Param String nickname) {
         boolean result = registerDAO.register(email, password, nickname);
         ctx.response().setStatusCode(result ? HttpResponseStatus.OK.code() : HttpResponseStatus.PRECONDITION_FAILED.code());
         ctx.response().end();

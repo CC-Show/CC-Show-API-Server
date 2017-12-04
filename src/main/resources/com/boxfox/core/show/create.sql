@@ -1,1 +1,1 @@
-SELECT COUNT(*) FROM user WHERE email=? AND password=?
+INSERT INTO show (uid, idx, name, )

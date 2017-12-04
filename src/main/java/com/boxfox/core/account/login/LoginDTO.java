@@ -1,6 +1,7 @@
 package com.boxfox.core.account.login;
 
 import com.boxfox.support.data.AbstractDTO;
+import io.vertx.core.json.JsonObject;
 
 import java.sql.ResultSet;
 
@@ -18,5 +19,10 @@ public class LoginDTO extends AbstractDTO {
 
     public String getJTI() {
         return jti;
+    }
+
+    @Override
+    public JsonObject toJsonObject() {
+        return null;
     }
 }

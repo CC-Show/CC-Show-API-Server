@@ -17,4 +17,6 @@ public @interface RouteRegistration {
 
     String description() default "";
 
+    String paramDefaultType() default "";
+
 }

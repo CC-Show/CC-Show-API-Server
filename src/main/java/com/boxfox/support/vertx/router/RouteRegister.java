@@ -1,7 +1,9 @@
 package com.boxfox.support.vertx.router;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -74,7 +76,7 @@ public class RouteRegister {
         return ctx -> {
             List<Object> argments = new ArrayList<>();
             Arrays.stream(m.getParameters()).forEach(param -> {
-                String paramType = param.getAnnotation(Param.class).type();
+                String paramType = getParamType(param, m);
                 String paramName = param.getName();
                 Class<?> paramClass = param.getType();
                 if (paramClass.equals(Handler.class)) {
@@ -102,6 +104,20 @@ public class RouteRegister {
                 e.printStackTrace();
             }
         };
+    }
+
+    private String getParamType(Parameter param, Method m) {
+        String defaultParamType = m.getAnnotation(RouteRegistration.class).paramDefaultType();
+        String paramType = param.getAnnotation(Param.class).type();
+        if (param.equals(Param.TYPE_AUTO)) {
+            if (defaultParamType.length() == 0) {
+                HttpMethod method = m.getAnnotation(RouteRegistration.class).method()[0];
+                paramType = (method == HttpMethod.GET) ? Param.TYPE_QUERY : Param.TYPE_BODY;
+            } else {
+                paramType = defaultParamType;
+            }
+        }
+        return paramType;
     }
 
     private Object castingParameter(String str, String paramType) {

@@ -1,1 +1,1 @@
-SELECT COUNT(*) FROM user WHERE email=? AND password=?
+INSERT INTO user (email, password, nickname) values(?, ?, ?)
