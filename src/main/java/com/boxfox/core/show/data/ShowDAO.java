@@ -2,6 +2,7 @@ package com.boxfox.core.show.data;
 
 import com.boxfox.support.data.AbstractDAO;
 import com.boxfox.support.data.Database;
+import com.boxfox.support.secure.AES256;
 import io.vertx.core.json.JsonArray;
 
 import java.sql.ResultSet;
@@ -211,7 +212,7 @@ public class ShowDAO extends AbstractDAO {
         int showId = -1;
         String query = Database.getQueryFromResource("show/select/id.sql");
         try {
-            ResultSet rs = Database.executeQuery(query, email, showIdx);
+            ResultSet rs = Database.executeQuery(query, AES256.encrypt(email), showIdx);
             if (rs.next()) {
                 showId = rs.getInt("showid");
             }

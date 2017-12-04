@@ -2,6 +2,8 @@ package com.boxfox.core.account.login;
 
 import com.boxfox.support.data.AbstractDAO;
 import com.boxfox.support.data.Database;
+import com.boxfox.support.secure.AES256;
+import com.boxfox.support.secure.SHA256;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,7 +14,7 @@ public class LoginPerformer extends AbstractDAO {
         LoginDTO loginDTO = null;
         String loginQuery = Database.getQueryFromResource("login.sql");
         try {
-            ResultSet rs = Database.executeQuery(loginQuery, email, password);
+            ResultSet rs = Database.executeQuery(loginQuery, AES256.encrypt(email), SHA256.encrypt(password));
             if (rs.next() && rs.getInt(1) == 1) {
                 String uid = rs.getString("uid");
                 String jti = createJti(uid);
