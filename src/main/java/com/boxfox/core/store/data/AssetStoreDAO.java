@@ -2,6 +2,7 @@ package com.boxfox.core.store.data;
 
 import com.boxfox.support.data.AbstractDAO;
 import com.boxfox.support.data.Database;
+import com.sun.org.apache.regexp.internal.RE;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -50,7 +51,21 @@ public class AssetStoreDAO extends AbstractDAO {
         return result;
     }
 
-    public AssetDTO[] getAssets(int page, int sum) {
+    public SimpleAssetDTO[] getSimpleAssetList(int page, int sum) {
+        List<SimpleAssetDTO> result = new ArrayList();
+        String query = Database.getQueryFromResource("select/selectSimpleList.sql");
+        try {
+            ResultSet rs = Database.executeQuery(query, page, sum);
+            while (rs.next()) {
+                result.add(createSimpleAssetDTO(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result.toArray(new SimpleAssetDTO[result.size()]);
+    }
+
+    public AssetDTO[] getAssetList(int page, int sum) {
         List<AssetDTO> result = new ArrayList();
         String query = Database.getQueryFromResource("select/selectList.sql");
         try {
@@ -62,6 +77,11 @@ public class AssetStoreDAO extends AbstractDAO {
             e.printStackTrace();
         }
         return result.toArray(new AssetDTO[result.size()]);
+    }
+
+    private SimpleAssetDTO createSimpleAssetDTO(ResultSet rs) {
+
+        return new SimpleAssetDTO();
     }
 
     private AssetDTO createAssetDTO(ResultSet rs) throws SQLException {
