@@ -78,7 +78,7 @@ public class RouteRegister {
             Arrays.stream(m.getParameters()).forEach(param -> {
                 String paramName = param.getName();
                 Class<?> paramClass = param.getType();
-                if (paramClass.equals(Handler.class)) {
+                if (paramClass.equals(RoutingContext.class)) {
                     argments.add(ctx);
                 } else {
                     Object paramData = getParameterFromBody(ctx, paramName, paramClass);

@@ -107,11 +107,11 @@ public class ShowDAO extends AbstractDAO {
      * @param showId
      * @return slide index
      */
-    public int createSlide(int showId) {
+    public int createSlide(int showId, String name) {
         int result = -1;
         String query = Database.getQueryFromResource("slide/create.sql");
         try {
-            ResultSet rs = Database.executeQuery(query, showId);
+            ResultSet rs = Database.executeQuery(query, showId, name);
             if (rs.next()) {
                 result = rs.getInt(1);
             }

@@ -6,7 +6,7 @@ import io.vertx.core.json.JsonObject;
 
 public class RouterUtil {
 
-    public static HttpServerResponse putJsonHeader(HttpServerResponse response, JsonObject data) {
+    public static HttpServerResponse writeJsonResponse(HttpServerResponse response, Object data) {
         return response.putHeader("content-type", "application/json; charset=utf-8")
                 .write(Json.encodePrettily(data));
     }
