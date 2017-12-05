@@ -1,0 +1,1 @@
+INSERT INTO `asset` (uid, name) values(?, ?)

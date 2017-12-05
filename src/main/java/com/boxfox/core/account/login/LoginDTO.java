@@ -23,6 +23,9 @@ public class LoginDTO extends AbstractDTO {
 
     @Override
     public JsonObject toJsonObject() {
-        return null;
+        JsonObject object = new JsonObject();
+        object.put("uid", uid);
+        object.put("jti", jti);
+        return object;
     }
 }

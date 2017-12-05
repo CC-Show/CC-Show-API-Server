@@ -1,0 +1,1 @@
+INSERT INTO user (uid, email, password, nickname) values(?, ?, ?, ?)

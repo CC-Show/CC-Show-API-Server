@@ -38,9 +38,9 @@ public class AssetStoreRouter {
     }
 
     @RouteRegistration(uri = "/store/asset/", method = POST, description = "Asset 생성")
-    public void createAsset(RoutingContext ctx) {
+    public void createAsset(RoutingContext ctx, String name) {
         String uid = (String) ctx.data().get("uid");
-        AssetDTO asset = assetStoreDAO.createAsset(uid);
+        AssetDTO asset = assetStoreDAO.createAsset(uid, name);
         if (asset != null) {
             RouterUtil.writeJsonResponse(ctx.response(), asset.toJsonObject());
             ctx.response().setStatusCode(HttpResponseStatus.OK.code());

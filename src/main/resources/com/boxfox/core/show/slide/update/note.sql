@@ -1,0 +1,1 @@
+UPDATE `slide` SET note = ? WHERE showid = ? AND idx = ?

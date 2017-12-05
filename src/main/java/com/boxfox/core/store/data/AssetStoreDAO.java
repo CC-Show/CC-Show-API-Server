@@ -2,6 +2,7 @@ package com.boxfox.core.store.data;
 
 import com.boxfox.support.data.AbstractDAO;
 import com.boxfox.support.data.Database;
+import com.boxfox.support.secure.AES256;
 import com.sun.org.apache.regexp.internal.RE;
 
 import java.sql.ResultSet;
@@ -11,11 +12,11 @@ import java.util.List;
 
 public class AssetStoreDAO extends AbstractDAO {
 
-    public AssetDTO createAsset(String uid) {
+    public AssetDTO createAsset(String uid, String name) {
         AssetDTO result = null;
         String query = Database.getQueryFromResource("create.sql");
         try {
-            ResultSet rs = Database.executeQuery(query, uid);
+            ResultSet rs = Database.executeQuery(query, AES256.encrypt(uid), name);
             if (rs.next()) {
                 result = createAssetDTO(rs);
             }
@@ -29,7 +30,7 @@ public class AssetStoreDAO extends AbstractDAO {
         boolean result = false;
         String query = Database.getQueryFromResource("update/update.sql");
         try {
-            int count = Database.executeUpdate(query, id, name, date, content, license, openToStore);
+            int count = Database.executeUpdate(query, name, date, content, license, openToStore, id);
             result = count == 1;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -41,7 +42,7 @@ public class AssetStoreDAO extends AbstractDAO {
         boolean result = false;
         String query = Database.getQueryFromResource("update/updateCode.sql");
         try {
-            int count = Database.executeUpdate(query, id, html, css, js);
+            int count = Database.executeUpdate(query, html, css, js, id);
             result = count == 1;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -77,7 +78,7 @@ public class AssetStoreDAO extends AbstractDAO {
 
     public AssetCodeDTO getAssetCode(int id) {
         AssetCodeDTO result = null;
-        String query = Database.getQueryFromResource("select/selectCode.sql");
+        String query = Database.getQueryFromResource("select/code.sql");
         try {
             ResultSet rs = Database.executeQuery(query, id);
             if (rs.next()) {
@@ -94,9 +95,9 @@ public class AssetStoreDAO extends AbstractDAO {
 
     public SimpleAssetDTO[] getSimpleAssetList(int page, int sum) {
         List<SimpleAssetDTO> result = new ArrayList();
-        String query = Database.getQueryFromResource("select/selectSimpleList.sql");
+        String query = Database.getQueryFromResource("select/list.sql");
         try {
-            ResultSet rs = Database.executeQuery(query, page, sum);
+            ResultSet rs = Database.executeQuery(query, (page-1) * sum, sum);
             while (rs.next()) {
                 result.add(createSimpleAssetDTO(rs));
             }
@@ -108,9 +109,9 @@ public class AssetStoreDAO extends AbstractDAO {
 
     public AssetDTO[] getAssetList(int page, int sum) {
         List<AssetDTO> result = new ArrayList();
-        String query = Database.getQueryFromResource("select/selectList.sql");
+        String query = Database.getQueryFromResource("select/list.sql");
         try {
-            ResultSet rs = Database.executeQuery(query, page, sum);
+            ResultSet rs = Database.executeQuery(query, (page-1) * sum, sum);
             while (rs.next()) {
                 result.add(createAssetDTO(rs));
             }

@@ -1,0 +1,1 @@
+INSERT INTO `show` (uid, idx, name) values(?, ?, ?)

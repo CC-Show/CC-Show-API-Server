@@ -1,0 +1,1 @@
+UPDATE `show` SET name = ?, sizeUnit = ?, positionUnit = ? WHERE showid = ?

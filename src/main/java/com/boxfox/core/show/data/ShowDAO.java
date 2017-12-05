@@ -23,7 +23,8 @@ public class ShowDAO extends AbstractDAO {
         boolean result = false;
         String query = Database.getQueryFromResource("show/create.sql");
         try {
-            int count = Database.executeUpdate(query, uid, showName);
+            int idx = getShowCount(uid);
+            int count = Database.executeUpdate(query, AES256.encrypt(uid), idx + 1, AES256.encrypt(showName));
             if (count > 0) {
                 result = true;
             }
@@ -31,6 +32,16 @@ public class ShowDAO extends AbstractDAO {
             e.printStackTrace();
         }
         return result;
+    }
+
+    private int getShowCount(String uid) throws SQLException {
+        int count = 0;
+        String query = Database.getQueryFromResource("show/count.sql");
+        ResultSet rs = Database.executeQuery(query, AES256.encrypt(uid));
+        if (rs.next()) {
+            count = rs.getInt(1);
+        }
+        return count;
     }
 
     /**
@@ -66,7 +77,7 @@ public class ShowDAO extends AbstractDAO {
         boolean result = false;
         String query = Database.getQueryFromResource("show/update.sql");
         try {
-            int count = Database.executeUpdate(query, showId, name, sizeUnit, positionUnit);
+            int count = Database.executeUpdate(query, AES256.encrypt(name), sizeUnit, positionUnit, showId);
             if (count == 1) {
                 result = true;
             }
@@ -90,11 +101,11 @@ public class ShowDAO extends AbstractDAO {
             if (rs.next()) {
                 int idx = rs.getInt("idx");
                 int selectedSlide = rs.getInt("selectedSlide");
-                String uid = rs.getString("uid");
+                String email = rs.getString("email");
                 String name = rs.getString("name");
                 String sizeUnit = rs.getString("sizeUnit");
                 String positionUnit = rs.getString("positionUnit");
-                result = new ShowDTO(showId, uid, idx, selectedSlide, name, sizeUnit, positionUnit);
+                result = new ShowDTO(showId, email, idx, selectedSlide, name, sizeUnit, positionUnit);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -112,7 +123,8 @@ public class ShowDAO extends AbstractDAO {
         int result = -1;
         String query = Database.getQueryFromResource("slide/create.sql");
         try {
-            ResultSet rs = Database.executeQuery(query, showId, name);
+            int idx = getSlideCount(showId);
+            ResultSet rs = Database.executeQuery(query, showId, idx + 1, name);
             if (rs.next()) {
                 result = rs.getInt(1);
             }
@@ -120,6 +132,16 @@ public class ShowDAO extends AbstractDAO {
             e.printStackTrace();
         }
         return result;
+    }
+
+    private int getSlideCount(int showid) throws SQLException {
+        int count = 0;
+        String query = Database.getQueryFromResource("slide/count.sql");
+        ResultSet rs = Database.executeQuery(query, showid);
+        if (rs.next()) {
+            count = rs.getInt(1);
+        }
+        return count;
     }
 
     /**
@@ -133,7 +155,7 @@ public class ShowDAO extends AbstractDAO {
         boolean result = false;
         String query = Database.getQueryFromResource("slide/delete.sql");
         try {
-            int count = Database.executeUpdate(query, slideIdx);
+            int count = Database.executeUpdate(query, showId, slideIdx);
             if (count > 0) {
                 result = true;
             }
@@ -226,7 +248,7 @@ public class ShowDAO extends AbstractDAO {
         boolean result = false;
         String query = Database.getQueryFromResource("slide/update/update.sql");
         try {
-            int count = Database.executeUpdate(query, showId, slideIdx, name, note, assets);
+            int count = Database.executeUpdate(query, name, note, assets, showId, slideIdx);
             if (count == 1) {
                 result = true;
             }
@@ -248,7 +270,7 @@ public class ShowDAO extends AbstractDAO {
         boolean result = false;
         String query = Database.getQueryFromResource("slide/update/assets.sql");
         try {
-            int count = Database.executeUpdate(query, showId, slideIdx, assets);
+            int count = Database.executeUpdate(query, assets, showId, slideIdx);
             if (count == 1) {
                 result = true;
             }
@@ -270,7 +292,7 @@ public class ShowDAO extends AbstractDAO {
         boolean result = false;
         String query = Database.getQueryFromResource("slide/update/name.sql");
         try {
-            int count = Database.executeUpdate(query, showId, slideIdx, name);
+            int count = Database.executeUpdate(query, name, showId, slideIdx);
             if (count == 1) {
                 result = true;
             }
@@ -292,7 +314,7 @@ public class ShowDAO extends AbstractDAO {
         boolean result = false;
         String query = Database.getQueryFromResource("slide/update/note.sql");
         try {
-            int count = Database.executeUpdate(query, showId, slideIdx, note);
+            int count = Database.executeUpdate(query, note, showId, slideIdx);
             if (count == 1) {
                 result = true;
             }

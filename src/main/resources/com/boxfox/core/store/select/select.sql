@@ -1,0 +1,1 @@
+SELECT * FROM `asset` as a RIGHT JOIN `asset_code` as c on a.id = c.id WHERE a.id = ?

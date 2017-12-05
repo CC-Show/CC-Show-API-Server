@@ -1,0 +1,1 @@
+SELECT s.*, u.email FROM `show` as s RIGHT JOIN `user` as u on u.uid = s.uid WHERE s.showid = ?

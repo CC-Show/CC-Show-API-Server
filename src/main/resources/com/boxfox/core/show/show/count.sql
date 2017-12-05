@@ -1,0 +1,1 @@
+SELECT count(*) from `show` WHERE uid = ?

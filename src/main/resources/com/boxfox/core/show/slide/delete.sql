@@ -1,0 +1,1 @@
+DELETE FROM `slide` WHERE showid = ? AND idx = ?

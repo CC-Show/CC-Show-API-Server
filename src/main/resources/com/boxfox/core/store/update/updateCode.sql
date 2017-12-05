@@ -1,0 +1,1 @@
+UPDATE `asset_code` SET html = ?, css = ?, js = ? WHERE id = ?

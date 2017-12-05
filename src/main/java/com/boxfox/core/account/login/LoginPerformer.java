@@ -7,6 +7,7 @@ import com.boxfox.support.secure.SHA256;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.UUID;
 
 public class LoginPerformer extends AbstractDAO {
 
@@ -16,7 +17,7 @@ public class LoginPerformer extends AbstractDAO {
         try {
             ResultSet rs = Database.executeQuery(loginQuery, AES256.encrypt(email), SHA256.encrypt(password));
             if (rs.next() && rs.getInt(1) == 1) {
-                String uid = rs.getString("uid");
+                String uid = AES256.decrypt(rs.getString("uid"));
                 String jti = createJti(uid);
                 loginDTO = new LoginDTO(uid, jti);
             }
@@ -28,9 +29,10 @@ public class LoginPerformer extends AbstractDAO {
 
     private String createJti(String uid) throws SQLException {
         String query = Database.getQueryFromResource("createJTI.sql");
-        ResultSet rs = Database.executeQuery(query, uid);
-        if (rs.next()) {
-            return rs.getString(1);
+        String uuid = UUID.randomUUID().toString();
+        int count = Database.executeUpdate(query, SHA256.encrypt(uid), SHA256.encrypt(uuid));
+        if (count == 1) {
+            return uuid;
         } else {
             throw new SQLException();
         }

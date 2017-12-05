@@ -5,11 +5,11 @@ import io.vertx.core.json.JsonObject;
 
 public class ShowDTO extends AbstractDTO {
     private int showId, idx, selectedSlide;
-    private String uid, name, sizeUnit, positionUnit;
+    private String email, name, sizeUnit, positionUnit;
 
-    public ShowDTO(int showId, String uid, int idx, int selectedSlide, String name, String sizeUnit, String positionUnit) {
+    public ShowDTO(int showId, String email, int idx, int selectedSlide, String name, String sizeUnit, String positionUnit) {
         this.showId = showId;
-        this.uid = uid;
+        this.email = email;
         this.idx = idx;
         this.selectedSlide = selectedSlide;
         this.name = name;
@@ -29,8 +29,8 @@ public class ShowDTO extends AbstractDTO {
         return selectedSlide;
     }
 
-    public String getUid() {
-        return uid;
+    public String getEmail() {
+        return email;
     }
 
     public String getName() {
@@ -49,6 +49,7 @@ public class ShowDTO extends AbstractDTO {
     public JsonObject toJsonObject() {
         JsonObject jsonObject = new JsonObject();
         jsonObject.put("idx", idx);
+        jsonObject.put("email", email);
         jsonObject.put("name", name);
         jsonObject.put("selectedSlide", selectedSlide);
         jsonObject.put("sizeUnit", sizeUnit);
