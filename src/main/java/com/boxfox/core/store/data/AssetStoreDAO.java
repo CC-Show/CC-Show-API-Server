@@ -25,6 +25,30 @@ public class AssetStoreDAO extends AbstractDAO {
         return result;
     }
 
+    public boolean updateAsset(int id, String name, String date, String content, String license, int view, int price, boolean openToStore) {
+        boolean result = false;
+        String query = Database.getQueryFromResource("update/update.sql");
+        try {
+            int count = Database.executeUpdate(query, id, name, date, content, license, view, price, openToStore);
+            result = count == 1;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public boolean updateAssetCode(int id, String html, String css, String js) {
+        boolean result = false;
+        String query = Database.getQueryFromResource("update/updateCode.sql");
+        try {
+            int count = Database.executeUpdate(query, id, html, css, js);
+            result = count == 1;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     public boolean deleteAsset(int id) {
         boolean result = false;
         String query = Database.getQueryFromResource("delete.sql");
@@ -79,9 +103,17 @@ public class AssetStoreDAO extends AbstractDAO {
         return result.toArray(new AssetDTO[result.size()]);
     }
 
-    private SimpleAssetDTO createSimpleAssetDTO(ResultSet rs) {
-
-        return new SimpleAssetDTO();
+    private SimpleAssetDTO createSimpleAssetDTO(ResultSet rs) throws SQLException {
+        int id = rs.getInt("id");
+        String name = rs.getString("name");
+        String date = rs.getDate("date").toString();
+        String content = rs.getString("content");
+        String license = rs.getString("license");
+        String email = rs.getString("email");
+        int view = rs.getInt("view");
+        int price = rs.getInt("price");
+        boolean openToStore = rs.getBoolean("openToStore");
+        return new SimpleAssetDTO(id, name, date, email);
     }
 
     private AssetDTO createAssetDTO(ResultSet rs) throws SQLException {
@@ -90,10 +122,13 @@ public class AssetStoreDAO extends AbstractDAO {
         String date = rs.getDate("date").toString();
         String content = rs.getString("content");
         String license = rs.getString("license");
-        String uid = rs.getString("uid");
+        String email = rs.getString("email");
         int view = rs.getInt("view");
         int price = rs.getInt("price");
         boolean openToStore = rs.getBoolean("openToStore");
-        return new AssetDTO(id, name, date, content, license, uid, view, price, openToStore);
+        String html = rs.getString("html");
+        String css = rs.getString("css");
+        String js = rs.getString("js");
+        return new AssetDTO(id, name, date, content, license, email, view, price, openToStore, html, css, js);
     }
 }

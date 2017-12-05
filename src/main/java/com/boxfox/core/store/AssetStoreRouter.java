@@ -48,4 +48,21 @@ public class AssetStoreRouter {
         }
         ctx.response().end();
     }
+
+    @RouteRegistration(uri = "/store/", method = PUT, description = "Asset 정보 업데이트")
+    public void updateAsset(RoutingContext ctx, int id, String name, String date, String content, String license, int view, int price, boolean openToStore) {
+        String uid = (String) ctx.data().get("uid");
+        boolean result = assetStoreDAO.updateAsset(id, name, date, content, license, view, price, openToStore);
+
+        ctx.response().setStatusCode(result ? HttpResponseStatus.OK.code() : HttpResponseStatus.FAILED_DEPENDENCY.code());
+        ctx.response().end();
+    }
+
+    @RouteRegistration(uri = "/store/code", method = PUT, description = "Asset 코드 업데이트")
+    public void updateAssetCode(RoutingContext ctx, int id, String html, String css, String js) {
+        String uid = (String) ctx.data().get("uid");
+        boolean result = assetStoreDAO.updateAssetCode(id, html, css, js);
+        ctx.response().setStatusCode(result ? HttpResponseStatus.OK.code() : HttpResponseStatus.FAILED_DEPENDENCY.code());
+        ctx.response().end();
+    }
 }
