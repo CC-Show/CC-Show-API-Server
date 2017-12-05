@@ -4,9 +4,10 @@ import com.boxfox.support.data.AbstractDTO;
 import io.vertx.core.json.JsonObject;
 
 public class AssetDTO extends AbstractDTO {
-    private String name, date, content, license, email, html, css, js;
+    private String name, date, content, license, email;
     private int view, price, id;
     private boolean openToStore;
+    private AssetCodeDTO codeDTO;
 
     public AssetDTO(int id, String name, String date, String content, String license, String email, int view, int price, boolean openToStore, String html, String css, String js) {
         this.id = id;
@@ -18,9 +19,7 @@ public class AssetDTO extends AbstractDTO {
         this.view = view;
         this.price = price;
         this.openToStore = openToStore;
-        this.html = html;
-        this.css = css;
-        this.js = js;
+        this.codeDTO = new AssetCodeDTO(html, css, js);
     }
 
     @Override
@@ -35,9 +34,9 @@ public class AssetDTO extends AbstractDTO {
         object.put("view", view);
         object.put("price", price);
         object.put("openToStore", openToStore);
-        object.put("html", html);
-        object.put("css", css);
-        object.put("js", js);
+        object.put("html", codeDTO.getHtml());
+        object.put("css", codeDTO.getCss());
+        object.put("js", codeDTO.getJs());
         return object;
     }
 }

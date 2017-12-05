@@ -75,6 +75,23 @@ public class AssetStoreDAO extends AbstractDAO {
         return result;
     }
 
+    public AssetCodeDTO getAssetCode(int id) {
+        AssetCodeDTO result = null;
+        String query = Database.getQueryFromResource("select/selectCode.sql");
+        try {
+            ResultSet rs = Database.executeQuery(query, id);
+            if (rs.next()) {
+                String html = rs.getString("html");
+                String css = rs.getString("css");
+                String js = rs.getString("js");
+                result = new AssetCodeDTO(html, css, js);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     public SimpleAssetDTO[] getSimpleAssetList(int page, int sum) {
         List<SimpleAssetDTO> result = new ArrayList();
         String query = Database.getQueryFromResource("select/selectSimpleList.sql");

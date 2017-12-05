@@ -109,6 +109,14 @@ public class ShowRouter {
     }
 
     @RouteRegistration(uri = "/slide/:user/:show", method = PUT, description = "slide 정보 update")
+    public void updateSlide(RoutingContext ctx, String user, Integer show, Integer slide, String type, String name, String note, String assets) {
+        int showId = showDAO.getShowId(user, show);
+        boolean result = showDAO.updateSlide(showId, slide, name, note, assets);
+        ctx.response().setStatusCode(result ? HttpResponseStatus.OK.code() : HttpResponseStatus.EXPECTATION_FAILED.code());
+        ctx.response().end();
+    }
+
+    @RouteRegistration(uri = "/slide/:user/:show", method = PATCH, description = "slide 정보 update")
     public void updateSlide(RoutingContext ctx, String user, Integer show, Integer slide, String type, String data) {
         int showId = showDAO.getShowId(user, show);
         boolean result = false;

@@ -222,6 +222,20 @@ public class ShowDAO extends AbstractDAO {
         return showId;
     }
 
+    public boolean updateSlide(int showId, int slideIdx, String name, String note, String assets) {
+        boolean result = false;
+        String query = Database.getQueryFromResource("slide/update/update.sql");
+        try {
+            int count = Database.executeUpdate(query, showId, slideIdx, name, note, assets);
+            if (count == 1) {
+                result = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     /**
      * update assets data of slide
      *
