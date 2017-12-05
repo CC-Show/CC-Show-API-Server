@@ -5,11 +5,11 @@ import io.vertx.core.json.JsonObject;
 
 public class AssetDTO extends AbstractDTO {
     private String name, date, content, license, email;
-    private int view, price, id;
+    private int view, star, id;
     private boolean openToStore;
     private AssetCodeDTO codeDTO;
 
-    public AssetDTO(int id, String name, String date, String content, String license, String email, int view, int price, boolean openToStore, String html, String css, String js) {
+    public AssetDTO(int id, String name, String date, String content, String license, String email, int view, int star, boolean openToStore, String html, String css, String js) {
         this.id = id;
         this.name = name;
         this.date = date;
@@ -17,7 +17,7 @@ public class AssetDTO extends AbstractDTO {
         this.license = license;
         this.email = email;
         this.view = view;
-        this.price = price;
+        this.star = star;
         this.openToStore = openToStore;
         this.codeDTO = new AssetCodeDTO(html, css, js);
     }
@@ -32,7 +32,7 @@ public class AssetDTO extends AbstractDTO {
         object.put("license", license);
         object.put("email", email);
         object.put("view", view);
-        object.put("price", price);
+        object.put("star", star);
         object.put("openToStore", openToStore);
         object.put("html", codeDTO.getHtml());
         object.put("css", codeDTO.getCss());

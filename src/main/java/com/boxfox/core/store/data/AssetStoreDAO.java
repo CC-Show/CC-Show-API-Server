@@ -25,11 +25,11 @@ public class AssetStoreDAO extends AbstractDAO {
         return result;
     }
 
-    public boolean updateAsset(int id, String name, String date, String content, String license, int view, int price, boolean openToStore) {
+    public boolean updateAsset(int id, String name, String date, String content, String license, boolean openToStore) {
         boolean result = false;
         String query = Database.getQueryFromResource("update/update.sql");
         try {
-            int count = Database.executeUpdate(query, id, name, date, content, license, view, price, openToStore);
+            int count = Database.executeUpdate(query, id, name, date, content, license, openToStore);
             result = count == 1;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -128,7 +128,7 @@ public class AssetStoreDAO extends AbstractDAO {
         String license = rs.getString("license");
         String email = rs.getString("email");
         int view = rs.getInt("view");
-        int price = rs.getInt("price");
+        int star = rs.getInt("star");
         boolean openToStore = rs.getBoolean("openToStore");
         return new SimpleAssetDTO(id, name, date, email);
     }
@@ -141,11 +141,11 @@ public class AssetStoreDAO extends AbstractDAO {
         String license = rs.getString("license");
         String email = rs.getString("email");
         int view = rs.getInt("view");
-        int price = rs.getInt("price");
+        int star = rs.getInt("star");
         boolean openToStore = rs.getBoolean("openToStore");
         String html = rs.getString("html");
         String css = rs.getString("css");
         String js = rs.getString("js");
-        return new AssetDTO(id, name, date, content, license, email, view, price, openToStore, html, css, js);
+        return new AssetDTO(id, name, date, content, license, email, view, star, openToStore, html, css, js);
     }
 }

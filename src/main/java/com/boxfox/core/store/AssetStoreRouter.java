@@ -51,9 +51,9 @@ public class AssetStoreRouter {
     }
 
     @RouteRegistration(uri = "/store/asset/", method = PUT, description = "Asset 정보 업데이트")
-    public void updateAsset(RoutingContext ctx, int id, String name, String date, String content, String license, int view, int price, boolean openToStore) {
+    public void updateAsset(RoutingContext ctx, int id, String name, String date, String content, String license, boolean openToStore) {
         String uid = (String) ctx.data().get("uid");
-        boolean result = assetStoreDAO.updateAsset(id, name, date, content, license, view, price, openToStore);
+        boolean result = assetStoreDAO.updateAsset(id, name, date, content, license, openToStore);
 
         ctx.response().setStatusCode(result ? HttpResponseStatus.OK.code() : HttpResponseStatus.FAILED_DEPENDENCY.code());
         ctx.response().end();
